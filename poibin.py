@@ -18,6 +18,12 @@ Description:
         * ``pmf``: probability mass function
         * ``cdf``: cumulative distribution function
         * ``pval``: p-value (1 - cdf)
+        * ``mean``: mean of the distribution
+        * ``var``: variance of the distribution
+        * ``std``: standard deviation of the distribution
+        * ``skew``: skewness of the distribution
+        * ``amax``: max value of the probability mass function
+        * ``argmax``: index of the max value of the probability mass function
 
 Usage:
     Be ``p`` a list or  NumPy array of success probabilities for ``n``
@@ -27,6 +33,30 @@ Usage:
 
         >>> from poibin import PoiBin
         >>> pb = PoiBin(p)
+
+    * mean of the distribution, use::
+
+        >>> pb.mean()
+
+    * variance of the distribution, use::
+
+        >>> pb.var()
+
+    * standard deviation of the distribution, use::
+
+        >>> pb.std()
+
+    * skewness of the distribution, use::
+
+        >>> pb.skew()
+
+    * max value of the probability mass function, use::
+
+        >>> pb.amax()
+
+    * index of the max value of the probability mass function, use::
+
+        >>> pb.argmax()
 
     Be ``x`` a list or NumPy array of different number of successes.
     To obtain the:
@@ -84,10 +114,81 @@ class PoiBin(object):
         self.omega = 2 * np.pi / (self.number_trials + 1)
         self.pmf_list = self.get_pmf_xi()
         self.cdf_list = self.get_cdf(self.pmf_list)
+        self.mean_value = self.get_mean()
+        self.var_value = self.get_var()
+        self.std_value = self.get_std(self.var_value)
+        self.skew_value = self.get_skew(self.std_value)
+        self.amax_value = self.get_amax(self.pmf_list)
+        self.argmax_value = self.get_argmax(self.pmf_list)
 
 # ------------------------------------------------------------------------------
 # Methods for the Poisson Binomial Distribution
 # ------------------------------------------------------------------------------
+    def mean(self):
+        """Calculate the mean of the distribution.
+
+        The mean is defined as
+
+        .. math::
+
+            mean = \sum_{i=1}^{n} p_{i}.
+
+        """
+
+        return self.mean_value
+
+    def var(self):
+        """Calculate the variance of the distribution.
+
+        The variance is defined as
+
+        .. math::
+
+            \sigma^{2} = \sum_{i=1}^{n} (1-p_{i})p_{i}.
+
+        """
+
+        return self.var_value
+
+    def std(self):
+        """Calculate the standard deviation of the distribution.
+
+        The standard deviation is defined as
+
+        .. math::
+
+            \sigma = \sqrt{\sum_{i=1}^{n} (1-p_{i})p_{i}}.
+
+        """
+
+        return self.std_value
+
+    def skew(self):
+        """Calculate the skewness of the distribution.
+
+        The skewness is defined as
+
+        .. math::
+
+            \frac{1}{\sigma^{3}} = \sum_{i=1}^{n} (1-2*p_{i})(1-p_{i})p_{i}.
+
+        """
+
+        return self.skew_value
+
+    def amax(self):
+        """Calculate the max value of the probability mass function.
+
+        """
+
+        return self.amax_value
+
+    def argmax(self):
+        """Calculate the index of the max value of the probability mass function.
+
+        """
+
+        return self.argmax_value
 
     def pmf(self, number_successes):
         """Calculate the probability mass function ``pmf`` for the input values.
@@ -228,6 +329,91 @@ class PoiBin(object):
         return chi
 
 # ------------------------------------------------------------------------------
+# Methods to obtain other parameters
+# ------------------------------------------------------------------------------
+
+    def get_mean(self):
+        """Return the mean of the distribution.
+
+        The mean is defined as
+
+        .. math::
+
+            mean = \sum_{i=1}^{n} p_{i}.
+
+        """
+
+        return np.sum(self.success_probabilities)
+
+    def get_var(self):
+        """Return the variance of the distribution.
+
+        The variance is defined as
+
+        .. math::
+
+            \sigma^{2} = \sum_{i=1}^{n} (1-p_{i})p_{i}.
+
+        """
+
+        self.success_probabilities_complement = 1 - self.success_probabilities
+
+        return np.dot(self.success_probabilities,
+                      (self.success_probabilities_complement))
+
+    def get_std(self, var):
+        """Return the standard deviation of the distribution.
+
+        The standard deviation is defined as
+
+        .. math::
+
+            \sigma = \sqrt{\sum_{i=1}^{n} (1-p_{i})p_{i}}.
+
+        :param variance: variance of the distribution
+        :type variance: numpy.array
+        """
+
+        return np.sqrt(var)
+
+    def get_skew(self, std):
+        """Return the skewness of the distribution.
+
+        The skewness is defined as
+
+        .. math::
+
+            \frac{1}{\sigma^{3}} = \sum_{i=1}^{n} (1-2*p_{i})(1-p_{i})p_{i}.
+
+        """
+
+        probs_aux = 1 - 2*self.success_probabilities
+        probs_aux_2 = np.multiply(
+            probs_aux, np.multiply(self.success_probabilities_complement,
+                                   self.success_probabilities))
+        return probs_aux_2.sum()/np.power(std, 3)
+
+    def get_amax(self, event_probabilities):
+        """Return the max value of the probability mass function.
+
+        :param event_probabilities: array of single event probabilities
+        :type event_probabilities: numpy.array
+
+        """
+
+        return np.amax(self.pmf_list)
+
+    def get_argmax(self, event_probabilities):
+        """Return the index of the max value of the probability mass function.
+
+        :param event_probabilities: array of single event probabilities
+        :type event_probabilities: numpy.array
+
+        """
+
+        return np.argmax(self.pmf_list)
+
+# ------------------------------------------------------------------------------
 # Auxiliary functions
 # ------------------------------------------------------------------------------
 
@@ -285,4 +471,3 @@ class PoiBin(object):
 
 if __name__ == "__main__":
     pass
-

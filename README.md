@@ -10,6 +10,12 @@ The implemented methods are:
 * `pmf`: probability mass function
 * `cdf`: cumulative distribution function
 * `pval`: p-value for right tailed tests
+* `mean`: mean of the distribution
+* `var`: variance of the distribution
+* `std`: standard deviation of the distribution
+* `skew`: skewness of the distribution
+* `amax`: max value of the probability mass function
+* `argmax`: index of the max value of the probability mass function
 
 ## Author
 Mika Straka
@@ -30,6 +36,31 @@ In order to create the Poisson Binomial distributions, use
 from poibin import PoiBin
 pb = PoiBin(p)
 ```
+* Mean
+```python
+pb.mean()
+```
+* Variance
+```python
+pb.var()
+```
+* Standard Deviation
+```python
+pb.std()
+```
+* Skewness
+```python
+pb.skew()
+```
+* Max value
+```python
+pb.amax()
+```
+* Index of the max value
+```python
+pb.argmax()
+```
+
 Be `x` a list/NumPy array of different numbers of success. Use the following
 methods to obtain the corresponding quantities:
 

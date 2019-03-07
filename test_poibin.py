@@ -253,3 +253,169 @@ def test_check_input_prob():
                                + "than 1."):
         pb = PoiBin([1, 2])
 
+# PoiBin.mean ------------------------------------------------------------------
+
+
+def test_mean():
+    """Test mean function."""
+    p = [0, 0, 0, 1, 1, 1]
+    pb = PoiBin(p)
+    assert(pb.mean() == np.array([3]))
+
+
+def test_mean_pb_binom():
+    """Compare the mean function with the binomial limit case."""
+    # For equal probabilites p_j, the Poisson Binomial distribution reduces
+    # to the Binomial one:
+    p = [0.5, 0.5, 0.5, 0.5]
+    pb = PoiBin(p)
+    bn = binom(n=4, p=p[0])
+
+    # Compare to four digits behind the comma
+    assert int(bn.mean() * 10000) == int(pb.mean() * 10000)
+
+    # For different probabilities p_j, the Poisson Binomial distribution and
+    # the Binomial distribution are different:
+    pb = PoiBin([0.5, 0.5, 0.8, 0.8])
+    bn = binom(4, p=0.5)
+    assert int(bn.mean() * 10000) != int(pb.mean() * 10000)
+
+
+# PoiBin.var ------------------------------------------------------------------
+
+def test_var():
+    """Test mean function."""
+    p = [0.1, 0.1, 0.1, 0.9, 0.9, 0.9]
+    pb = PoiBin(p)
+    assert(pb.var() == np.array([0.54]))
+
+
+def test_var_pb_binom():
+    """Compare the mean function with the binomial limit case."""
+    # For equal probabilites p_j, the Poisson Binomial distribution reduces
+    # to the Binomial one:
+    p = [0.5, 0.5, 0.5, 0.5]
+    pb = PoiBin(p)
+    bn = binom(n=4, p=p[0])
+
+    # Compare to four digits behind the comma
+    assert int(bn.var() * 10000) == int(pb.var() * 10000)
+
+    # For different probabilities p_j, the Poisson Binomial distribution and
+    # the Binomial distribution are different:
+    pb = PoiBin([0.5, 0.5, 0.8, 0.8])
+    bn = binom(4, p=0.5)
+    assert int(bn.var() * 10000) != int(pb.var() * 10000)
+
+
+# PoiBin.std ------------------------------------------------------------------
+
+def test_std():
+    """Test mean function."""
+    p = [0.1, 0.1, 0.1, 0.9, 0.9, 0.9]
+    pb = PoiBin(p)
+    assert(pb.std() == np.sqrt(0.54))
+
+
+def test_std_pb_binom():
+    """Compare the mean function with the binomial limit case."""
+    # For equal probabilites p_j, the Poisson Binomial distribution reduces
+    # to the Binomial one:
+    p = [0.5, 0.5, 0.5, 0.5]
+    pb = PoiBin(p)
+    bn = binom(n=4, p=p[0])
+
+    # Compare to four digits behind the comma
+    assert int(bn.std() * 10000) == int(pb.std() * 10000)
+
+    # For different probabilities p_j, the Poisson Binomial distribution and
+    # the Binomial distribution are different:
+    pb = PoiBin([0.5, 0.5, 0.8, 0.8])
+    bn = binom(4, p=0.5)
+    assert int(bn.std() * 10000) != int(pb.std() * 10000)
+
+
+# PoiBin.skew -----------------------------------------------------------------
+
+def test_skew():
+    """Test skew function."""
+    p = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]
+    pb = PoiBin(p)
+    assert (pb.skew() - np.array([0.1941243876059742])) < \
+        4 * np.finfo(float).eps
+
+
+def test_skew_pb_binom():
+    """Compare the skew function with the binomial limit case."""
+    # For equal probabilites p_j, the Poisson Binomial distribution reduces
+    # to the Binomial one:
+    p = [0.5, 0.5, 0.5, 0.5]
+    pb = PoiBin(p)
+    bn = binom(n=4, p=p[0])
+
+    # Compare to four digits behind the comma
+    assert int(bn.stats(moments='s') * 10000) == int(pb.skew() * 10000)
+
+    # For different probabilities p_j, the Poisson Binomial distribution and
+    # the Binomial distribution are different:
+    pb = PoiBin([0.5, 0.5, 0.8, 0.8])
+    bn = binom(4, p=0.5)
+    assert int(bn.stats(moments='s') * 10000) != int(pb.skew() * 10000)
+
+
+# PoiBin.amax -----------------------------------------------------------------
+
+def test_amax():
+    """Test amax function."""
+    p = [0.1, 0.1, 0.1, 0.9, 0.9, 0.9]
+    pb = PoiBin(p)
+    assert (pb.amax() - np.array([0.59122])) < 4 * np.finfo(float).eps
+
+
+def test_amax_pb_binom():
+    """Compare the amax function with the binomial limit case."""
+    # For equal probabilites p_j, the Poisson Binomial distribution reduces
+    # to the Binomial one:
+    p = [0.5, 0.5, 0.5, 0.5]
+    pb = PoiBin(p)
+    bn = binom(n=4, p=p[0])
+
+    cases = [0, 1, 2, 3, 4]
+
+    # Compare to four digits behind the comma
+    assert int(np.amax(bn.pmf(cases)) * 10000) == int(pb.amax() * 10000)
+
+    # For different probabilities p_j, the Poisson Binomial distribution and
+    # the Binomial distribution are different:
+    pb = PoiBin([0.5, 0.5, 0.8, 0.8])
+    bn = binom(4, p=0.5)
+    assert int(np.amax(bn.pmf(cases)) * 10000) != int(pb.amax() * 10000)
+
+
+# PoiBin.amax -----------------------------------------------------------------
+
+def test_argmax():
+    """Test amax function."""
+    p = [0.1, 0.1, 0.1, 0.9, 0.9, 0.9]
+    pb = PoiBin(p)
+    assert (pb.amax() - np.array([0.59122])) < 4 * np.finfo(float).eps
+
+
+def test_argmax_pb_binom():
+    """Compare the amax function with the binomial limit case."""
+    # For equal probabilites p_j, the Poisson Binomial distribution reduces
+    # to the Binomial one:
+    p = [0.5, 0.5, 0.5, 0.5]
+    pb = PoiBin(p)
+    bn = binom(n=4, p=p[0])
+
+    cases = [0, 1, 2, 3, 4]
+
+    # Compare to four digits behind the comma
+    assert int(np.argmax(bn.pmf(cases)) * 10000) == int(pb.argmax() * 10000)
+
+    # For different probabilities p_j, the Poisson Binomial distribution and
+    # the Binomial distribution are different:
+    pb = PoiBin([0.5, 0.5, 0.8, 0.8])
+    bn = binom(4, p=0.5)
+    assert int(np.argmax(bn.pmf(cases)) * 10000) != int(pb.argmax() * 10000)
