@@ -18,7 +18,7 @@ The implemented methods are:
 * `argmax`: index of the max value of the probability mass function
 
 ## Author
-Mika Straka
+Mika Straka, Maxi Marufo
 
 ### This Version
 The newest version can be found on
@@ -99,4 +99,4 @@ Computational Statistics & Data Analysis, Volume 59, March 2013, pages 41-51,
 ISSN 0167-9473](http://dx.doi.org/10.1016/j.csda.2012.10.006)
 
 ---
-Copyright (c) 2016-2017 Mika J. Straka
+Copyright (c) 2016-2020 Mika J. Straka, Maxi Marufo
