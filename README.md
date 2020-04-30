@@ -6,7 +6,7 @@ by [@tsakim](https://github.com/tsakim)
 This version adds these Features:
 * Adds `mean`, `var`, `std`, `skew`, `amax` and `argmax` methods
 * Solves FFT instability issues, as [proposed here](https://github.com/tsakim/poibin/pull/7)
-* by [@zeeshansayyed](https://github.com/zeeshansayyed)
+by [@zeeshansayyed](https://github.com/zeeshansayyed)
 
 ## About
 The module contains a Python implementation of functions related to the Poisson
