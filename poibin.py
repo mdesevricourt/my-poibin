@@ -301,7 +301,7 @@ class PoiBin(object):
             chi[1:self.number_trials - half_number_trials + 1] [::-1])
         chi /= self.number_trials + 1
         xi = np.fft.fft(chi)
-        if self.check_xi_are_real(xi):
+        if self.check_xi_are_real(xi, eps=1e-15):
             xi = xi.real
         else:
             raise TypeError("pmf / xi values have to be real.")
@@ -444,7 +444,7 @@ class PoiBin(object):
         return True
 
     @staticmethod
-    def check_xi_are_real(xi_values):
+    def check_xi_are_real(xi_values, eps=np.finfo(float).eps):
         """Check whether all the ``xi``s have imaginary part equal to 0.
 
         The probabilities :math:`\\xi(k) = pmf(k) = Pr(X = k)` have to be
@@ -453,7 +453,8 @@ class PoiBin(object):
         :param xi_values: single event probabilities
         :type xi_values: complex
         """
-        return np.all(xi_values.imag <= np.finfo(float).eps)
+
+        return np.all(xi_values.imag <= eps)
 
     def check_input_prob(self):
         """Check that all the input probabilities are in the interval [0, 1]."""
