@@ -1,5 +1,11 @@
 # Poisson Binomial Distribution for Python
 
+### This Version
+This is a fork from the [original project by @tsakim](https://github.com/tsakim/poibin)
+This version adds these Features:
+* Adds `mean`, `var`, `std`, `skew`, `amax` and `argmax` methods
+* Solves FFT instability issues, as [proposed by @zeeshansayyed](https://github.com/tsakim/poibin/pull/7)
+
 ## About
 The module contains a Python implementation of functions related to the Poisson
 Binomial probability distribution \[1\], which describes the probability
@@ -17,12 +23,8 @@ The implemented methods are:
 * `amax`: max value of the probability mass function
 * `argmax`: index of the max value of the probability mass function
 
-## Author
-Mika Straka, Maxi Marufo
-
-### This Version
-The newest version can be found on
-[https://github.com/tsakim/poibin](https://github.com/tsakim/poibin)
+## Authors
+Mika Straka, Maxi Marufo, Zeeshan Sayyed
 
 ## Dependencies
 * [NumPy](http://www.numpy.org/)
@@ -99,4 +101,4 @@ Computational Statistics & Data Analysis, Volume 59, March 2013, pages 41-51,
 ISSN 0167-9473](http://dx.doi.org/10.1016/j.csda.2012.10.006)
 
 ---
-Copyright (c) 2016-2020 Mika J. Straka, Maxi Marufo
+Copyright (c) 2016-2020 Mika J. Straka, Maxi Marufo, Zeeshan Sayyed
